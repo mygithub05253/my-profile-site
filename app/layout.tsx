@@ -3,7 +3,13 @@ import Link from "next/link";
 import { profile } from "@/lib/profile";
 import "./globals.css";
 
+// OG 이미지 등 메타데이터 절대 URL의 기준 — Vercel이 주입하는 프로덕션 도메인 사용
+const siteUrl = process.env.VERCEL_PROJECT_PRODUCTION_URL
+  ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+  : "http://localhost:3000";
+
 export const metadata: Metadata = {
+  metadataBase: new URL(siteUrl),
   title: {
     default: "이동원 — 풀스택 개발자",
     template: "%s | 이동원",
