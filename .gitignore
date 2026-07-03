@@ -11,6 +11,22 @@ node_modules/
 npm-debug.log
 yarn-error.log
 
+# Next.js / Velite
+.next/
+out/
+.velite/
+next-env.d.ts
+*.tsbuildinfo
+
+# 빌드 시 동기화되는 콘텐츠 (SSOT는 content-hub 레포)
+.content-hub/
+
+# 프로젝트 문서 (Obsidian Vault 미러링 대상, 레포 제외)
+docs/
+
+# Serena
+.serena/
+
 # OS files
 .DS_Store
 Thumbs.db
