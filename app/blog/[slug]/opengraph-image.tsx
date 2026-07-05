@@ -40,11 +40,11 @@ export default async function OgImage({ params }: Props) {
           flexDirection: "column",
           justifyContent: "space-between",
           padding: "72px 80px",
-          backgroundColor: "#0b1220",
+          backgroundColor: "#fffaf3",
           backgroundImage:
-            "linear-gradient(135deg, #0b1220 0%, #111827 60%, #0e2230 100%)",
+            "linear-gradient(135deg, #fffaf3 0%, #fff6e6 60%, #fff2cf 100%)",
           fontFamily: "NotoSansKR",
-          color: "#e5e7eb",
+          color: "#332a23",
         }}
       >
         <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
@@ -53,11 +53,11 @@ export default async function OgImage({ params }: Props) {
               display: "flex",
               width: 14,
               height: 44,
-              backgroundColor: "#22d3ee",
-              borderRadius: 4,
+              backgroundColor: "#f28a00",
+              borderRadius: 7,
             }}
           />
-          <div style={{ display: "flex", fontSize: 30, color: "#22d3ee", fontWeight: 700 }}>
+          <div style={{ display: "flex", fontSize: 30, color: "#f28a00", fontWeight: 700 }}>
             이동원 · 개발 블로그
           </div>
         </div>
@@ -68,7 +68,7 @@ export default async function OgImage({ params }: Props) {
             fontSize: title.length > 40 ? 56 : 68,
             fontWeight: 700,
             lineHeight: 1.25,
-            color: "#f9fafb",
+            color: "#332a23",
           }}
         >
           {title}
@@ -81,12 +81,12 @@ export default async function OgImage({ params }: Props) {
             alignItems: "center",
             fontSize: 26,
             fontWeight: 400,
-            color: "#9ca3af",
+            color: "#6d5f52",
           }}
         >
           <div style={{ display: "flex", gap: 20 }}>
             {tags.map((tag) => (
-              <div key={tag} style={{ display: "flex", color: "#22d3ee" }}>
+              <div key={tag} style={{ display: "flex", color: "#f28a00" }}>
                 #{tag}
               </div>
             ))}

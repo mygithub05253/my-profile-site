@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { JetBrains_Mono } from "next/font/google";
+import { JetBrains_Mono, Nunito } from "next/font/google";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { profile } from "@/lib/profile";
@@ -9,6 +9,14 @@ import "./globals.css";
 const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin"],
   variable: "--font-jetbrains-mono",
+  display: "swap",
+});
+
+// 디스플레이(제목) 폰트 — 라틴은 Nunito, 한글은 Pretendard 폴백 (DESIGN.md v1.1)
+const nunito = Nunito({
+  subsets: ["latin"],
+  weight: ["700", "800"],
+  variable: "--font-nunito",
   display: "swap",
 });
 
@@ -33,7 +41,11 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="ko" suppressHydrationWarning className={jetbrainsMono.variable}>
+    <html
+      lang="ko"
+      suppressHydrationWarning
+      className={`${jetbrainsMono.variable} ${nunito.variable}`}
+    >
       <head>
         <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
         {/* Pretendard Variable — 한글 가변 폰트 (dynamic subset) */}
@@ -50,7 +62,7 @@ export default function RootLayout({
           본문으로 건너뛰기
         </a>
         <Header />
-        <main id="main" className="pt-16">
+        <main id="main" className="pt-24">
           {children}
         </main>
         <Footer />

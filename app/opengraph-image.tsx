@@ -8,7 +8,7 @@ export const contentType = "image/png";
 export default async function OgImage() {
   const title = "이동원 — 풀스택 개발자";
   const subtitle = "자동화 생태계 · Next.js · Spring Boot";
-  const subsetText = `${title}${subtitle}DW`;
+  const subsetText = `${title}${subtitle}dongwon.`;
   const [bold, regular] = await Promise.all([
     loadNotoSansKR(subsetText, 700),
     loadNotoSansKR(subsetText, 400),
@@ -25,9 +25,9 @@ export default async function OgImage() {
           justifyContent: "center",
           alignItems: "center",
           gap: 28,
-          backgroundColor: "#0b1220",
+          backgroundColor: "#fffaf3",
           backgroundImage:
-            "linear-gradient(135deg, #0b1220 0%, #111827 60%, #0e2230 100%)",
+            "linear-gradient(135deg, #fffaf3 0%, #fff6e6 60%, #fff2cf 100%)",
           fontFamily: "NotoSansKR",
         }}
       >
@@ -36,17 +36,17 @@ export default async function OgImage() {
             display: "flex",
             fontSize: 44,
             fontWeight: 700,
-            color: "#22d3ee",
+            color: "#f28a00",
           }}
         >
-          DW
+          dongwon.
         </div>
         <div
           style={{
             display: "flex",
             fontSize: 72,
             fontWeight: 700,
-            color: "#f9fafb",
+            color: "#332a23",
           }}
         >
           {title}
@@ -56,7 +56,7 @@ export default async function OgImage() {
             display: "flex",
             fontSize: 32,
             fontWeight: 400,
-            color: "#9ca3af",
+            color: "#6d5f52",
           }}
         >
           {subtitle}
