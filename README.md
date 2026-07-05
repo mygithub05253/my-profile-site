@@ -1,9 +1,7 @@
 <div align="center">
 
-<!-- 배너 이미지: GPT Image 2.0으로 생성 후 .github/assets/readme-hero.png 커밋 → 아래 주석 해제
-     (생성 프롬프트: docs/md/_research/GPT-Image-2.0_README_이미지_프롬프트.md — docs는 로컬 전용)
+<!-- 배너 갱신 프롬프트: docs/md/_research/GPT-Image-2.0_README_이미지_프롬프트.md (로컬 전용) -->
 <img src=".github/assets/readme-hero.png" alt="my-profile-site — 개인 브랜딩 자동화 생태계" width="100%" />
--->
 
 # my-profile-site
 
