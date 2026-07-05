@@ -1,7 +1,16 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import { JetBrains_Mono } from "next/font/google";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 import { profile } from "@/lib/profile";
 import "./globals.css";
+
+// 수치·기간·스택용 모노 폰트 (DESIGN.md 3장) — CSS 변수로 주입해 토큰이 소비
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ["latin"],
+  variable: "--font-jetbrains-mono",
+  display: "swap",
+});
 
 // OG 이미지 등 메타데이터 절대 URL의 기준 — Vercel이 주입하는 프로덕션 도메인 사용
 const siteUrl = process.env.VERCEL_PROJECT_PRODUCTION_URL
@@ -17,52 +26,34 @@ export const metadata: Metadata = {
   description: profile.intro,
 };
 
-const NAV_ITEMS = [
-  { href: "/#skills", label: "기술" },
-  { href: "/#projects", label: "프로젝트" },
-  { href: "/blog", label: "블로그" },
-  { href: "/#contact", label: "연락처" },
-];
+// FOUC 방지: 첫 페인트 전에 저장된 수동 테마를 html에 적용 (없으면 시스템 설정 CSS가 처리)
+const THEME_INIT_SCRIPT = `(function(){try{var t=localStorage.getItem("theme");if(t==="light"||t==="dark"){document.documentElement.dataset.theme=t}}catch(e){}})();`;
 
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="ko">
+    <html lang="ko" suppressHydrationWarning className={jetbrainsMono.variable}>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
+        {/* Pretendard Variable — 한글 가변 폰트 (dynamic subset) */}
+        <link
+          rel="stylesheet"
+          href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css"
+        />
+      </head>
       <body className="min-h-screen antialiased">
-        <nav className="fixed top-0 z-50 w-full border-b border-gray-700 bg-gray-900/95 backdrop-blur-sm">
-          <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-4">
-            <Link href="/" className="text-2xl font-bold text-cyan-400">
-              DW
-            </Link>
-            <ul className="flex items-center gap-4 text-sm sm:gap-8 sm:text-base">
-              {NAV_ITEMS.map((item) => (
-                <li key={item.href}>
-                  <Link
-                    href={item.href}
-                    className="transition-colors hover:text-cyan-400"
-                  >
-                    {item.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </nav>
-        <main className="pt-16">{children}</main>
-        <footer className="border-t border-gray-700 bg-gray-950 px-4 py-8 text-center text-sm text-gray-400">
-          <p>© 2026 이동원. All rights reserved.</p>
-          <p className="mt-2">
-            콘텐츠는{" "}
-            <a
-              href="https://github.com/mygithub05253/content-hub"
-              className="text-cyan-400 hover:underline"
-            >
-              content-hub
-            </a>
-            에서 자동 동기화됩니다.
-          </p>
-        </footer>
+        <a
+          href="#main"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded-sm focus:bg-accent focus:px-4 focus:py-2 focus:text-bg"
+        >
+          본문으로 건너뛰기
+        </a>
+        <Header />
+        <main id="main" className="pt-16">
+          {children}
+        </main>
+        <Footer />
       </body>
     </html>
   );
