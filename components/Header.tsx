@@ -5,9 +5,10 @@ import { useEffect, useState } from "react";
 import ThemeToggle from "@/components/ThemeToggle";
 import { profile } from "@/lib/profile";
 
-// IA(사용자 UI §1): Projects · Blog · Contact — Records는 PR-D(홈 섹션)에서 추가
+// IA(사용자 UI §1): Projects · Records · Blog · Contact (Records는 홈 섹션 앵커)
 const NAV_ITEMS = [
   { href: "/projects", label: "Projects" },
+  { href: "/#records", label: "Records" },
   { href: "/blog", label: "Blog" },
   { href: "/#contact", label: "Contact" },
 ];

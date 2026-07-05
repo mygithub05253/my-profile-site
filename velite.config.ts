@@ -57,5 +57,95 @@ export default defineConfig({
           permalink: `/projects/${encodeURIComponent(data.slug)}`,
         })),
     },
+    // data/ 정적 데이터 3종 (ADR-11 — content-hub data/*.yml, L2 검증)
+    profileData: {
+      name: "ProfileData",
+      pattern: "data/profile.yml",
+      single: true,
+      schema: s.object({
+        name: s.string(),
+        nameEn: s.string(),
+        role: s.string(),
+        intro: s.string(),
+        github: s.string().url(),
+        velog: s.string().url(),
+        emails: s
+          .array(s.object({ label: s.string(), address: s.string() }))
+          .min(1),
+        highlights: s
+          .array(
+            s.object({
+              icon: s.string(),
+              title: s.string(),
+              subtitle: s.string(),
+              description: s.string(),
+              color: s.enum(["gold", "blue", "green", "purple", "pink"]),
+            }),
+          )
+          .min(1),
+      }),
+    },
+    stacksData: {
+      name: "StacksData",
+      pattern: "data/stacks.yml",
+      single: true,
+      schema: s.object({
+        items: s
+          .array(
+            s
+              .object({
+                name: s.string(),
+                // icon = simple-icons 슬러그, 없으면 emoji 폴백 — 둘 중 하나 필수
+                icon: s.string().optional(),
+                emoji: s.string().optional(),
+                category: s.enum([
+                  "data-ai",
+                  "backend",
+                  "frontend",
+                  "infra",
+                  "ai-tooling",
+                ]),
+                featured: s.boolean().default(false),
+              })
+              .refine((item) => item.icon || item.emoji, {
+                message: "icon(simple-icons 슬러그) 또는 emoji 중 하나는 필수",
+              }),
+          )
+          .min(1),
+      }),
+    },
+    recordsData: {
+      name: "RecordsData",
+      pattern: "data/records.yml",
+      single: true,
+      schema: s.object({
+        intro: s.object({
+          badge: s.string(),
+          title: s.string(),
+          description: s.string(),
+          loop: s
+            .array(s.object({ label: s.string(), description: s.string() }))
+            .min(1),
+        }),
+        items: s
+          .array(
+            s.object({
+              date: s.string(),
+              category: s.enum([
+                "education",
+                "certification",
+                "activity",
+                "bootcamp",
+                "competition",
+                "project",
+              ]),
+              title: s.string(),
+              description: s.string(),
+              link: s.string().url().optional(),
+            }),
+          )
+          .min(1),
+      }),
+    },
   },
 });
