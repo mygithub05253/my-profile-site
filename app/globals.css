@@ -1,65 +1,71 @@
 @import "tailwindcss";
 
 /* ==========================================================================
-   디자인 토큰 정본: DESIGN.md v1.0 (C안 Signal — 다크 기본 + 라이트 듀얼)
+   디자인 토큰 정본: DESIGN.md v1.1 (Warm Paper — 라이트 기본 + 다크 듀얼)
+   벤치마킹: lova-clover.github.io (웜 크림 페이퍼 + 오렌지 포인트, ADR-12)
    원칙: 모든 색·타이포·형태는 CSS 변수 → @theme inline 브리지. 하드코딩 금지
    ========================================================================== */
 
 :root {
-  /* Color — Dark (기본) */
-  --bg: #0a0c10;
-  --surface: #14171c;
-  --surface-2: #1c2027;
-  --border: #2a2f38;
-  --text: #e6e8eb;
-  --text-muted: #9ba3ae;
-  --accent: #5b9dff;
-  --accent-soft: #5b9dff1a;
-  --success: #4ade80;
-  --warning: #fbbf24;
+  /* Color — Warm Paper Light (기본) */
+  --bg: #fffaf3;
+  --surface: #fffdf8;
+  --surface-2: #fff2cf;
+  --border: #ecdcc7;
+  --text: #332a23;
+  --text-muted: #6d5f52;
+  --accent: #f28a00;
+  --accent-soft: #ff9f1c26;
+  --success: #2e7d5b;
+  --warning: #b45309;
+  --shadow-card: 0 10px 24px rgba(104, 70, 25, 0.06);
 
   /* Typography */
   --font-body: "Pretendard Variable", Pretendard, system-ui, -apple-system,
     "Segoe UI", Roboto, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+  --font-display: var(--font-nunito, "Nunito"), "Pretendard Variable",
+    Pretendard, "Noto Sans KR", system-ui, sans-serif;
   --font-mono: var(--font-jetbrains-mono, "JetBrains Mono"), "JetBrains Mono",
     ui-monospace, SFMono-Regular, Menlo, monospace;
 
-  /* Radius */
-  --radius-sm: 6px;
-  --radius-md: 10px;
-  --radius-lg: 16px;
+  /* Radius — 둥글고 푸근하게 */
+  --radius-sm: 10px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
 
   /* Motion */
   --motion-fast: 150ms;
   --motion-base: 250ms;
 }
 
-/* Light 테마 — 수동 토글(data-theme) 우선, 없으면 시스템 설정 따름 */
-[data-theme="light"] {
-  --bg: #fafaf9;
-  --surface: #ffffff;
-  --surface-2: #f4f4f3;
-  --border: #e4e4e2;
-  --text: #1a1d21;
-  --text-muted: #5c6470;
-  --accent: #2458d6;
-  --accent-soft: #2458d614;
-  --success: #15803d;
-  --warning: #b45309;
+/* Dark 테마 (웜 브라운) — 수동 토글(data-theme) 우선, 없으면 시스템 설정 따름 */
+[data-theme="dark"] {
+  --bg: #211a13;
+  --surface: #2a2119;
+  --surface-2: #362a1e;
+  --border: #4a3b2a;
+  --text: #f2eae0;
+  --text-muted: #b3a493;
+  --accent: #ffa02e;
+  --accent-soft: #ffa02e26;
+  --success: #5bd3a4;
+  --warning: #fbbf24;
+  --shadow-card: none;
 }
 
-@media (prefers-color-scheme: light) {
+@media (prefers-color-scheme: dark) {
   :root:not([data-theme="dark"]):not([data-theme="light"]) {
-    --bg: #fafaf9;
-    --surface: #ffffff;
-    --surface-2: #f4f4f3;
-    --border: #e4e4e2;
-    --text: #1a1d21;
-    --text-muted: #5c6470;
-    --accent: #2458d6;
-    --accent-soft: #2458d614;
-    --success: #15803d;
-    --warning: #b45309;
+    --bg: #211a13;
+    --surface: #2a2119;
+    --surface-2: #362a1e;
+    --border: #4a3b2a;
+    --text: #f2eae0;
+    --text-muted: #b3a493;
+    --accent: #ffa02e;
+    --accent-soft: #ffa02e26;
+    --success: #5bd3a4;
+    --warning: #fbbf24;
+    --shadow-card: none;
   }
 }
 
@@ -77,7 +83,10 @@
   --color-warning: var(--warning);
 
   --font-body: var(--font-body);
+  --font-display: var(--font-display);
   --font-mono: var(--font-mono);
+
+  --shadow-card: var(--shadow-card);
 
   --radius-sm: var(--radius-sm);
   --radius-md: var(--radius-md);
@@ -114,8 +123,9 @@ h1,
 h2,
 h3,
 h4 {
-  font-weight: 700;
-  letter-spacing: -0.02em;
+  font-family: var(--font-display);
+  font-weight: 800;
+  letter-spacing: -0.01em;
 }
 
 /* 포커스 링 — 접근성 (사용자 UI §8) */

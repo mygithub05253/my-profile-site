@@ -3,25 +3,18 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import ThemeToggle from "@/components/ThemeToggle";
+import { profile } from "@/lib/profile";
 
+// IA(사용자 UI §1): Projects · Blog · Contact — Records는 PR-D(홈 섹션)에서 추가
 const NAV_ITEMS = [
-  { href: "/#skills", label: "기술" },
-  { href: "/#projects", label: "프로젝트" },
-  { href: "/blog", label: "블로그" },
-  { href: "/#contact", label: "연락처" },
+  { href: "/projects", label: "Projects" },
+  { href: "/blog", label: "Blog" },
+  { href: "/#contact", label: "Contact" },
 ];
 
+// lova-clover 벤치마킹: 떠 있는 알약(pill) 헤더 (DESIGN.md v1.1 / ADR-12)
 export default function Header() {
   const [open, setOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
-
-  // 스크롤 시 하단선+블러 강조 (사용자 UI §2)
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 8);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
 
   // 모바일 오버레이: 스크롤 잠금 + ESC 닫기
   useEffect(() => {
@@ -38,27 +31,43 @@ export default function Header() {
   }, [open]);
 
   return (
-    <header
-      className={`fixed top-0 z-50 w-full backdrop-blur-sm transition-colors duration-150 ${
-        scrolled ? "border-b border-border bg-bg/90" : "bg-bg/70"
-      }`}
-    >
-      <div className="mx-auto flex h-16 max-w-5xl items-center justify-between px-4">
-        <Link href="/" className="text-xl font-bold text-accent">
-          DW<span className="text-muted">.</span>
+    <header className="fixed top-0 z-50 flex w-full justify-center px-4 pt-4">
+      <div className="flex w-full max-w-3xl items-center justify-between rounded-full border border-border bg-surface/80 px-5 py-2.5 shadow-card backdrop-blur-md">
+        <Link
+          href="/"
+          className="font-display text-lg font-extrabold text-accent"
+        >
+          dongwon<span className="text-muted">.</span>
         </Link>
 
         {/* 데스크톱 내비 */}
-        <nav aria-label="주 메뉴" className="hidden items-center gap-8 md:flex">
+        <nav aria-label="주 메뉴" className="hidden items-center gap-6 md:flex">
           {NAV_ITEMS.map((item) => (
             <Link
               key={item.href}
               href={item.href}
-              className="text-sm text-muted transition-colors duration-150 hover:text-accent"
+              className="text-sm font-semibold text-muted transition-colors duration-150 hover:text-accent"
             >
               {item.label}
             </Link>
           ))}
+          <span aria-hidden className="h-4 w-px bg-border" />
+          <a
+            href={profile.github}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-sm font-semibold text-muted transition-colors duration-150 hover:text-accent"
+          >
+            GitHub
+          </a>
+          <a
+            href={profile.velog}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-sm font-semibold text-muted transition-colors duration-150 hover:text-accent"
+          >
+            velog
+          </a>
           <ThemeToggle />
         </nav>
 
@@ -70,7 +79,7 @@ export default function Header() {
             onClick={() => setOpen(!open)}
             aria-expanded={open}
             aria-label={open ? "메뉴 닫기" : "메뉴 열기"}
-            className="flex h-9 w-9 items-center justify-center rounded-sm border border-border text-muted transition-colors duration-150 hover:border-accent hover:text-accent"
+            className="flex h-9 w-9 items-center justify-center rounded-full border border-border text-muted transition-colors duration-150 hover:border-accent hover:text-accent"
           >
             <svg aria-hidden viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
               {open ? (
@@ -87,18 +96,20 @@ export default function Header() {
       {open && (
         <nav
           aria-label="모바일 메뉴"
-          className="fixed inset-0 top-16 z-40 flex flex-col gap-2 bg-bg px-6 py-8 md:hidden"
+          className="fixed inset-0 top-20 z-40 flex flex-col gap-2 bg-bg px-6 py-8 md:hidden"
         >
-          {NAV_ITEMS.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              onClick={() => setOpen(false)}
-              className="rounded-md px-4 py-3 text-lg font-semibold text-text transition-colors duration-150 hover:bg-surface hover:text-accent"
-            >
-              {item.label}
-            </Link>
-          ))}
+          {[...NAV_ITEMS, { href: profile.github, label: "GitHub" }, { href: profile.velog, label: "velog" }].map(
+            (item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                onClick={() => setOpen(false)}
+                className="rounded-md px-4 py-3 text-lg font-bold text-text transition-colors duration-150 hover:bg-surface-2 hover:text-accent"
+              >
+                {item.label}
+              </Link>
+            ),
+          )}
         </nav>
       )}
     </header>

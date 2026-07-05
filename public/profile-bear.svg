@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" role="img" aria-label="푸근한 곰돌이 프로필">
+  <!-- 푸근한 곰돌이 아바타 (기본 일러스트 — GPT Image 2.0 생성본으로 교체 가능: public/profile-bear.png) -->
+  <defs>
+    <radialGradient id="bgGrad" cx="50%" cy="42%" r="70%">
+      <stop offset="0%" stop-color="#FFE9BF"/>
+      <stop offset="100%" stop-color="#FFD98F"/>
+    </radialGradient>
+  </defs>
+  <circle cx="120" cy="120" r="116" fill="url(#bgGrad)"/>
+  <!-- 귀 -->
+  <circle cx="58" cy="62" r="30" fill="#A9744B"/>
+  <circle cx="182" cy="62" r="30" fill="#A9744B"/>
+  <circle cx="58" cy="62" r="15" fill="#D9A876"/>
+  <circle cx="182" cy="62" r="15" fill="#D9A876"/>
+  <!-- 얼굴 -->
+  <ellipse cx="120" cy="126" rx="82" ry="76" fill="#B98155"/>
+  <!-- 볼터치 -->
+  <ellipse cx="66" cy="146" rx="14" ry="9" fill="#F2A65A" opacity="0.55"/>
+  <ellipse cx="174" cy="146" rx="14" ry="9" fill="#F2A65A" opacity="0.55"/>
+  <!-- 주둥이 -->
+  <ellipse cx="120" cy="152" rx="38" ry="30" fill="#EED3AE"/>
+  <!-- 눈 (푸근하게 웃는 반달눈) -->
+  <path d="M78 112 q10 -12 20 0" stroke="#3B2A1D" stroke-width="6" fill="none" stroke-linecap="round"/>
+  <path d="M142 112 q10 -12 20 0" stroke="#3B2A1D" stroke-width="6" fill="none" stroke-linecap="round"/>
+  <!-- 코 -->
+  <ellipse cx="120" cy="142" rx="11" ry="8" fill="#3B2A1D"/>
+  <!-- 입 (미소) -->
+  <path d="M104 158 q16 14 32 0" stroke="#3B2A1D" stroke-width="5" fill="none" stroke-linecap="round"/>
+</svg>

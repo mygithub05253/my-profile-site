@@ -28,5 +28,34 @@ export default defineConfig({
           permalink: `/blog/${encodeURIComponent(data.slug)}`,
         })),
     },
+    // projects 컬렉션 (콘텐츠 스키마 명세서 §4 — PR-C, L2 검증)
+    projects: {
+      name: "Project",
+      pattern: "projects/*.mdx",
+      schema: s
+        .object({
+          title: s.string(),
+          slug: s.string(),
+          type: s.literal("project"),
+          category: s.array(s.enum(["ai-data", "finance", "fullstack"])).min(1),
+          scope: s.enum(["personal", "team"]),
+          role: s.string().optional(),
+          period: s.string(),
+          stack: s.array(s.string()).min(1),
+          summary: s.string(),
+          thumbnail: s.string().optional(),
+          github: s.string().optional(),
+          repoVisibility: s.enum(["public", "private"]),
+          demo: s.string().optional(),
+          featured: s.boolean(),
+          order: s.number(),
+          status: s.enum(["draft", "published"]),
+          html: s.markdown(),
+        })
+        .transform((data) => ({
+          ...data,
+          permalink: `/projects/${encodeURIComponent(data.slug)}`,
+        })),
+    },
   },
 });

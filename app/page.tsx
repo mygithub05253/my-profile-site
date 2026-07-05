@@ -18,17 +18,45 @@ export default function HomePage() {
 
   return (
     <>
-      {/* Hero */}
-      <section className="flex min-h-[70vh] items-center justify-center px-4">
-        <div className="text-center">
-          <h1 className="mb-4 text-4xl text-text">{profile.name}</h1>
-          <p className="mb-6 text-xl text-accent">{profile.role}</p>
-          <p className="mx-auto mb-8 max-w-2xl text-muted">{profile.intro}</p>
-          <div className="flex justify-center gap-4">
-            <Button href="/#projects">프로젝트 보기</Button>
-            <Button href="/#contact" variant="secondary">
-              연락하기
-            </Button>
+      {/* Hero — lova-clover 벤치마킹: 배지 + 2줄 헤드라인 + 곰돌이 아바타 (DESIGN.md v1.1) */}
+      <section className="px-4 py-16 md:py-24">
+        <div className="mx-auto flex max-w-5xl flex-col-reverse items-center gap-10 md:flex-row md:justify-between">
+          <div className="text-center md:max-w-xl md:text-left">
+            <span className="mb-6 inline-flex items-center gap-2 rounded-full border border-border bg-surface px-4 py-1.5 text-xs font-bold tracking-wide text-accent shadow-card">
+              🐻 LEE DONGWON · FULLSTACK &amp; FINANCE
+            </span>
+            <h1 className="mb-6 text-3xl leading-tight md:text-4xl">
+              <span className="block text-text">한 번 쓰면,</span>
+              <span className="block text-accent">모든 곳에 반영된다.</span>
+            </h1>
+            <p className="mb-8 text-muted">{profile.intro}</p>
+            <div className="mb-8 flex flex-wrap justify-center gap-2 md:justify-start">
+              {["Next.js", "Spring Boot", "GitHub Actions", "Python"].map(
+                (tech) => (
+                  <Chip key={tech} variant="accent" mono className="text-xs">
+                    {tech}
+                  </Chip>
+                ),
+              )}
+            </div>
+            <div className="flex justify-center gap-4 md:justify-start">
+              <Button href="/projects">프로젝트 보기</Button>
+              <Button href="/#contact" variant="secondary">
+                연락하기
+              </Button>
+            </div>
+          </div>
+
+          {/* 곰돌이 아바타 — public/profile-bear.svg (GPT Image 2.0 생성본으로 교체 가능) */}
+          <div className="shrink-0">
+            {/* eslint-disable-next-line @next/next/no-img-element -- 정적 SVG 아바타 */}
+            <img
+              src="/profile-bear.svg"
+              alt="이동원 프로필 — 푸근한 곰돌이 아바타"
+              width={224}
+              height={224}
+              className="h-44 w-44 rounded-full border-4 border-surface-2 shadow-card md:h-56 md:w-56"
+            />
           </div>
         </div>
       </section>
@@ -111,6 +139,11 @@ export default function HomePage() {
               </a>
             </article>
           ))}
+        </div>
+        <div className="mt-8 text-center">
+          <Button href="/projects" variant="ghost">
+            모든 프로젝트 보기 →
+          </Button>
         </div>
       </Section>
 
