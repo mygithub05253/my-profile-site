@@ -49,9 +49,11 @@
 
 ## 5. 핵심 컴포넌트 규격
 
-- **헤더**: 상단 떠 있는 **알약(pill) 컨테이너** (rounded-full, blur+저투명 surface, 그림자) — 브랜드 `dongwon.` + Projects·Blog·Contact + GitHub·velog + 테마 토글
+- **헤더**: 상단 떠 있는 **알약(pill) 컨테이너** (rounded-full, blur+저투명 surface, 그림자) — 브랜드 `dongwon.` + Projects·Records·Blog·Contact + GitHub·velog + 테마 토글
 - **Hero**: 좌 텍스트(배지 pill → 2줄 헤드라인[2행 accent] → 소개 → 스택 칩 → 버튼 2개) + 우 **곰돌이 아바타**(원형, surface-2 보더)
-- **곰돌이 아바타**: `public/profile-bear.svg` 기본 제공 — GPT Image 2.0 생성본(png)으로 교체 가능
+- **곰돌이 아바타**: `public/profile-bear.png` (GPT Image 생성본, PR-D 적용) — 폴백 일러스트 `public/profile-bear.svg`
+- **홈 섹션(S-01, PR-D)**: Hero → About(강점 카드 5 + Core Stack 바) → Featured Projects → History & Records 타임라인(Growth Map 인트로 카드 + 카테고리 컬러 바 카드) → Blog 3 → Contact 채널 3카드. 데이터는 content-hub `data/*.yml` (ADR-11)
+- **Core Stack 필**: 라이트 고정색(`#fffdf8`/`#ecdcc7`) — 다크 테마에서도 브랜드 아이콘(simple-icons CDN) 가독 유지
 - **프로젝트 카드**: 썸네일 16:9(없으면 웜 파스텔 블록+이니셜) / 카테고리·scope 칩 / 제목 / 요약 / 스택 mono ×3+N / Private `--warning` 배지. hover: 살짝 떠오름(-2px)+accent 보더
 - **필터 칩**: rounded-full, 활성 = `--accent-soft`+`--accent`
 - **버튼**: Primary(accent 채움) / Secondary(보더) / Ghost. 상세의 GitHub/Demo는 Secondary
