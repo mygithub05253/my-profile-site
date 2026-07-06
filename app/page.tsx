@@ -1,24 +1,26 @@
-import Link from "next/link";
 import { profile } from "@/lib/profile";
 import {
   getFeaturedStacks,
+  getStacksByCategory,
   HIGHLIGHT_COLOR,
   RECORD_CATEGORY_META,
   records,
-  stacks,
 } from "@/lib/data";
 import { getPublishedProjects } from "@/lib/projects";
-import { getPublishedPosts } from "@/lib/posts";
 import Section from "@/components/Section";
 import ProjectCard from "@/components/ProjectCard";
 import Button from "@/components/ui/Button";
 import Chip from "@/components/ui/Chip";
 
-// S-01 홈 재구성 (PR-D): Hero → About(강점 카드+Core Stack) → Featured Projects
-// → History & Records 타임라인 → Blog → Contact — 데이터는 content-hub data/*.yml (ADR-11)
+// S-01 홈 재구성 (PR-D, 2026-07-06 개편): Hero → About(강점 카드+Core Stack 분야별 그룹)
+// → Star Projects → History & Records 타임라인 → Contact — 데이터는 content-hub data/*.yml (ADR-11)
 export default function HomePage() {
-  const featuredProjects = getPublishedProjects().slice(0, 6);
-  const recentPosts = getPublishedPosts().slice(0, 3);
+  const allProjects = getPublishedProjects();
+  // Star(featured)만 노출 — 0건이면 화면이 비지 않도록 기존 상위 6개 방식으로 폴백
+  const starredProjects = allProjects.filter((p) => p.featured);
+  const featuredProjects =
+    starredProjects.length > 0 ? starredProjects.slice(0, 6) : allProjects.slice(0, 6);
+  const stackGroups = getStacksByCategory();
 
   return (
     <>
@@ -95,43 +97,53 @@ export default function HomePage() {
           ))}
         </div>
 
-        {/* Core Stack 바 — 아이콘 필은 라이트 고정색 (다크에서도 브랜드 아이콘 가독 유지) */}
-        <div className="mt-6 flex flex-col items-start gap-4 rounded-md border border-border bg-bg p-6 md:flex-row md:items-center">
-          <div className="shrink-0 md:pr-2">
+        {/* Core Stack — 분야별 그룹 (data-ai/backend/frontend/infra/ai-tooling 순) */}
+        <div className="mt-6 flex flex-col gap-4 rounded-md border border-border bg-bg p-6">
+          <div>
             <p className="font-display text-base font-extrabold text-text">
               🧰 Core Stack
             </p>
             <p className="text-xs text-muted">주요 기술 스택</p>
           </div>
-          <ul className="flex flex-wrap gap-2">
-            {stacks.map((item) => (
-              <li
-                key={item.name}
-                className="flex items-center gap-2 rounded-full border border-[#ecdcc7] bg-[#fffdf8] px-3.5 py-1.5 text-sm font-semibold text-[#5c5247] shadow-card"
-              >
-                {item.icon ? (
-                  // eslint-disable-next-line @next/next/no-img-element -- simple-icons CDN 브랜드 아이콘
-                  <img
-                    src={`https://cdn.simpleicons.org/${item.icon}`}
-                    alt=""
-                    width={16}
-                    height={16}
-                    loading="lazy"
-                    className="h-4 w-4"
-                  />
-                ) : (
-                  <span aria-hidden className="text-sm leading-none">
-                    {item.emoji}
-                  </span>
-                )}
-                {item.name}
-              </li>
-            ))}
-          </ul>
+          {stackGroups.map((group) => (
+            <div
+              key={group.category}
+              className="flex flex-col gap-3 md:flex-row md:items-center"
+            >
+              <p className="w-28 shrink-0 text-xs font-bold uppercase tracking-wide text-muted">
+                {group.label}
+              </p>
+              <ul className="flex flex-wrap gap-2">
+                {group.items.map((item) => (
+                  <li
+                    key={item.name}
+                    className="flex items-center gap-2 rounded-full border border-[#ecdcc7] bg-[#fffdf8] px-3.5 py-1.5 text-sm font-semibold text-[#5c5247] shadow-card"
+                  >
+                    {item.icon ? (
+                      // eslint-disable-next-line @next/next/no-img-element -- simple-icons CDN 브랜드 아이콘
+                      <img
+                        src={`https://cdn.simpleicons.org/${item.icon}`}
+                        alt=""
+                        width={16}
+                        height={16}
+                        loading="lazy"
+                        className="h-4 w-4"
+                      />
+                    ) : (
+                      <span aria-hidden className="text-sm leading-none">
+                        {item.emoji}
+                      </span>
+                    )}
+                    {item.name}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
         </div>
       </Section>
 
-      {/* Featured Projects — content-hub projects/ 컬렉션 (썸네일은 frontmatter로 관리) */}
+      {/* Star Projects — content-hub projects/ 컬렉션 중 featured만 노출(0건이면 상위 6개 폴백) */}
       <Section
         id="projects"
         eyebrow="Projects"
@@ -233,43 +245,6 @@ export default function HomePage() {
               );
             })}
           </ul>
-        </div>
-      </Section>
-
-      {/* Blog — content-hub 자동 연동 최신 3편 */}
-      <Section
-        id="blog"
-        eyebrow="Blog"
-        title="과정을 기록으로 남깁니다"
-        subtitle="content-hub에서 빌드 시 자동 동기화되는 최신 글"
-      >
-        <div className="grid gap-4 md:grid-cols-3">
-          {recentPosts.map((post) => (
-            <Link
-              key={post.slug}
-              href={post.permalink}
-              className="flex flex-col rounded-md border border-border bg-surface p-6 transition-colors duration-150 hover:border-accent"
-            >
-              <time className="mb-2 font-mono text-xs font-medium text-muted">
-                {post.date.slice(0, 10)}
-              </time>
-              <span className="mb-3 line-clamp-2 text-base font-semibold leading-snug text-text">
-                {post.title}
-              </span>
-              <div className="mt-auto flex flex-wrap gap-2">
-                {post.tags.slice(0, 3).map((tag) => (
-                  <span key={tag} className="text-xs text-accent">
-                    #{tag}
-                  </span>
-                ))}
-              </div>
-            </Link>
-          ))}
-        </div>
-        <div className="mt-10 text-center">
-          <Button href="/blog" variant="ghost">
-            전체 글 보기 →
-          </Button>
         </div>
       </Section>
 

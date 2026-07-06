@@ -6,8 +6,10 @@ import {
   getProjectBySlug,
   getPublishedProjects,
 } from "@/lib/projects";
+import { getStructuredSections } from "@/lib/project-sections";
 import Button from "@/components/ui/Button";
 import Chip from "@/components/ui/Chip";
+import ProjectGallery from "@/components/ProjectGallery";
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -36,6 +38,13 @@ export default async function ProjectDetailPage({ params }: Props) {
 
   const { prev, next } = getAdjacentProjects(project.slug);
   const isPrivate = project.repoVisibility === "private";
+  const galleryImages =
+    project.images && project.images.length > 0
+      ? project.images
+      : project.thumbnail
+        ? [project.thumbnail]
+        : [];
+  const sections = getStructuredSections(project);
 
   return (
     <article className="px-4 py-16">
@@ -85,6 +94,49 @@ export default async function ProjectDetailPage({ params }: Props) {
             )}
           </div>
         </header>
+
+        {galleryImages.length > 0 && (
+          <div className="mb-10">
+            <ProjectGallery
+              images={galleryImages}
+              slug={project.slug}
+              title={project.title}
+            />
+          </div>
+        )}
+
+        {sections && (
+          <div className="mb-10 grid gap-4 md:grid-cols-3">
+            <div className="rounded-md border border-border bg-surface p-5">
+              <p className="mb-2 font-display text-xs font-extrabold text-accent">
+                PROBLEM
+              </p>
+              <p className="text-sm leading-relaxed text-text">
+                {sections.problem}
+              </p>
+            </div>
+            <div className="rounded-md border border-border bg-surface p-5">
+              <p className="mb-2 font-display text-xs font-extrabold text-accent">
+                BUILD
+              </p>
+              <ul className="space-y-1.5 text-sm leading-relaxed text-text">
+                {sections.build.map((line, i) => (
+                  <li key={i}>· {line}</li>
+                ))}
+              </ul>
+            </div>
+            <div className="rounded-md border border-border bg-surface p-5">
+              <p className="mb-2 font-display text-xs font-extrabold text-accent">
+                RESULT
+              </p>
+              <ul className="space-y-1.5 text-sm leading-relaxed text-text">
+                {sections.result.map((line, i) => (
+                  <li key={i}>· {line}</li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        )}
 
         <div
           className="prose-post"

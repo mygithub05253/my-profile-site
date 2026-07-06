@@ -11,6 +11,14 @@ function withLeadingSlash(value: string | undefined): string | undefined {
   return /^(\/|https?:\/\/)/.test(value) ? value : `/${value}`;
 }
 
+// 2026-07-06: 상세화면 재설계(images/build/result) — 공백/빈 문자열 원소는 제거해두어
+// 렌더 쪽에서 매번 방어 코드를 반복하지 않도록 한다.
+function cleanStringArray(value: string[] | undefined): string[] | undefined {
+  if (!value) return value;
+  const cleaned = value.map((v) => v.trim()).filter((v) => v.length > 0);
+  return cleaned.length > 0 ? cleaned : undefined;
+}
+
 export default defineConfig({
   root: ".content-hub",
   collections: {
@@ -60,10 +68,22 @@ export default defineConfig({
           order: s.number(),
           status: s.enum(["draft", "published"]),
           html: s.markdown(),
+          // 2026-07-06 설계 노트(사용자화면_개선4건) — 상세화면 재설계용 선택 필드.
+          // content-hub의 11개 mdx에는 아직 없음: 없으면 상세화면이 기존 5개 소제목을
+          // 자동 파싱해 같은 카드 레이아웃으로 폴백한다(lib/project-sections.ts).
+          images: s.array(s.string()).optional(),
+          problem: s.string().optional(),
+          build: s.array(s.string()).optional(),
+          result: s.array(s.string()).optional(),
         })
         .transform((data) => ({
           ...data,
           thumbnail: withLeadingSlash(data.thumbnail),
+          images: cleanStringArray(data.images)?.map(
+            (img) => withLeadingSlash(img) as string,
+          ),
+          build: cleanStringArray(data.build),
+          result: cleanStringArray(data.result),
           permalink: `/projects/${encodeURIComponent(data.slug)}`,
         })),
     },

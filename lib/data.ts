@@ -7,10 +7,31 @@ export const records = recordsData;
 export type StackItem = (typeof stacksData.items)[number];
 export type RecordItem = (typeof recordsData.items)[number];
 export type RecordCategory = RecordItem["category"];
+export type StackCategory = StackItem["category"];
 
 // Hero 칩 노출용
 export function getFeaturedStacks(): StackItem[] {
   return stacks.filter((item) => item.featured);
+}
+
+// Core Stack 분야별 그룹 라벨 + 표시 순서 (선언 순서가 곧 렌더 순서)
+export const STACK_CATEGORY_META: Record<StackCategory, { label: string }> = {
+  "data-ai": { label: "Data · AI" },
+  backend: { label: "Backend" },
+  frontend: { label: "Frontend" },
+  infra: { label: "Infra" },
+  "ai-tooling": { label: "AI Tooling" },
+};
+
+// Core Stack 바 — 분야(category)별로 묶어서 순서대로 반환
+export function getStacksByCategory(): { category: StackCategory; label: string; items: StackItem[] }[] {
+  return (Object.keys(STACK_CATEGORY_META) as StackCategory[])
+    .map((category) => ({
+      category,
+      label: STACK_CATEGORY_META[category].label,
+      items: stacks.filter((item) => item.category === category),
+    }))
+    .filter((group) => group.items.length > 0);
 }
 
 // 타임라인 카드 상단 컬러 바 + 라벨 (웜 파스텔 — DESIGN.md v1.1 팔레트 계열)
