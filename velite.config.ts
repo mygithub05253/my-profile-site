@@ -2,6 +2,15 @@ import { defineConfig, s } from "velite";
 
 // content-hub frontmatter 스키마 (설계서 4장) 기준.
 // 소스는 sync-content.mjs가 받아온 .content-hub/posts — 사이트 레포에는 콘텐츠를 두지 않는다.
+
+// FR-M22: thumbnail은 content-hub 검증 스크립트(REPO_ROOT / thumbnail) 때문에
+// 슬래시 없는 리포 상대경로("assets/slug/x.webp")로 저장된다 — 사이트에서 <img src>로
+// 쓰려면 루트 상대 URL이어야 하므로 여기서만 "/"를 붙인다 (원본 파일은 그대로 둠).
+function withLeadingSlash(value: string | undefined): string | undefined {
+  if (!value) return value;
+  return /^(\/|https?:\/\/)/.test(value) ? value : `/${value}`;
+}
+
 export default defineConfig({
   root: ".content-hub",
   collections: {
@@ -54,6 +63,7 @@ export default defineConfig({
         })
         .transform((data) => ({
           ...data,
+          thumbnail: withLeadingSlash(data.thumbnail),
           permalink: `/projects/${encodeURIComponent(data.slug)}`,
         })),
     },
