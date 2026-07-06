@@ -1,5 +1,5 @@
 import Link from "next/link";
-import type { Project } from "@/lib/projects";
+import { pastelFor, type Project } from "@/lib/projects";
 import Chip from "@/components/ui/Chip";
 
 const CATEGORY_LABEL: Record<string, string> = {
@@ -7,15 +7,6 @@ const CATEGORY_LABEL: Record<string, string> = {
   finance: "Finance",
   fullstack: "Fullstack",
 };
-
-// 썸네일 없는 카드용 파스텔 톤 순환 (lova-clover 벤치마킹 — 웜 파스텔 블록)
-const PASTELS = ["#FFE9BF", "#FFDFD1", "#E4F0DC", "#E8E3F7", "#DFEDF7"];
-
-function pastelFor(slug: string): string {
-  let hash = 0;
-  for (const ch of slug) hash = (hash * 31 + ch.charCodeAt(0)) | 0;
-  return PASTELS[Math.abs(hash) % PASTELS.length];
-}
 
 // 프로젝트 카드 (사용자 UI §4) — 카드 전체 단일 링크, 중첩 링크 금지
 export default function ProjectCard({ project }: { project: Project }) {
@@ -28,13 +19,22 @@ export default function ProjectCard({ project }: { project: Project }) {
     >
       {/* 썸네일 16:9 — 없으면 파스텔 블록 + 이니셜 */}
       <div
-        className="flex aspect-video items-center justify-center overflow-hidden"
+        className="relative flex aspect-video items-center justify-center overflow-hidden"
         style={
           project.thumbnail
             ? undefined
             : { backgroundColor: pastelFor(project.slug) }
         }
       >
+        {project.featured && (
+          <span
+            aria-label="대표 프로젝트"
+            title="대표 프로젝트"
+            className="absolute right-2 top-2 flex h-7 w-7 items-center justify-center rounded-full bg-surface/90 text-base shadow-card"
+          >
+            ⭐
+          </span>
+        )}
         {project.thumbnail ? (
           // eslint-disable-next-line @next/next/no-img-element -- content-hub 상대 경로 정적 서빙
           <img
