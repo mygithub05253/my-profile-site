@@ -22,9 +22,6 @@ next-env.d.ts
 .content-hub/
 public/assets/
 
-# 프로젝트 문서 (Obsidian Vault 미러링 대상, 레포 제외)
-docs/
-
 # Serena
 .serena/
 

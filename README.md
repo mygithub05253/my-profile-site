@@ -28,7 +28,7 @@
 | 프로필 사이트 | **my-profile-site** (이 레포) | Next.js 15 정적 생성 사이트. 콘텐츠를 빌드 시점에 clone해 블로그·프로젝트를 SSG로 서빙합니다. | 콘텐츠와 코드의 완전 분리 — 이 레포에는 글이 한 편도 없습니다. |
 | 역방향 백업 | [velog-backup](https://github.com/mygithub05253/velog-backup) | velog에서 직접 수정된 글을 일일 백업 + 주간 diff PR로 역동기화합니다. | 자동화의 사각지대(외부 편집)까지 닫는 양방향 동기화입니다. |
 | 프로필 README | [mygithub05253](https://github.com/mygithub05253/mygithub05253) | 최신 글 5개가 자동 반영되는 GitHub 프로필. dispatch 즉시 갱신 + 일일 백스톱 이중 경로입니다. | 실패 시 자동 복구되는 백스톱 설계입니다. |
-| 관리자 웹 (예정) | profile-admin | GitHub API로 content-hub에 커밋하는 서버리스 CMS. DB 없이 PR + auto-merge로 저장합니다. | 인증 경계(OAuth allowlist 1인)를 별도 레포로 분리한 구조입니다. |
+| 관리자 웹 | [profile-admin](https://github.com/mygithub05253/profile-admin) | GitHub API로 content-hub에 커밋하는 서버리스 CMS. DB 없이 PR + auto-merge로 저장합니다. | 인증 경계(OAuth allowlist 1인)를 별도 레포로 분리한 구조입니다. |
 
 ## 아키텍처
 
@@ -37,7 +37,7 @@
 ```mermaid
 flowchart LR
   OB[Obsidian 70_Blog] -->|"스케줄 push (09/21시)"| HUB[(content-hub<br/>SSOT)]
-  ADMIN[profile-admin<br/>예정] -->|PR + auto-merge| HUB
+  ADMIN[profile-admin] -->|PR + auto-merge| HUB
   HUB -->|GraphQL 발행| VELOG[velog]
   HUB -->|Deploy Hook| SITE[my-profile-site<br/>Vercel SSG]
   HUB -->|repository_dispatch| README[프로필 README]
@@ -111,7 +111,7 @@ npm run start   # 빌드 결과 서빙
 
 ## 문서
 
-설계 문서는 로컬 전용 `docs/` 폴더(`.gitignore` 대상)에서 6도메인 × 3종 세트(통합본·요약본·변경사항) 체계로 관리하며, Obsidian Vault에 미러링합니다. 각 도메인 폴더의 `README.md`가 내용물과 버전 관리 방식을 안내합니다.
+설계 문서는 `docs/` 폴더에서 6도메인 × 3종 세트(통합본·요약본·변경사항) 체계로 관리하며, Obsidian Vault에도 미러링합니다. 설계 과정을 투명하게 공개하기 위해 레포에 커밋되어 있습니다(2026-07-06부터, profile-admin·content-hub도 동일 원칙 적용). 각 도메인 폴더의 `README.md`가 내용물과 버전 관리 방식을 안내합니다.
 
 | 도메인 | 내용 |
 |--------|------|
@@ -126,10 +126,12 @@ npm run start   # 빌드 결과 서빙
 
 - [x] Phase 1~3: 자동화 생태계 E2E 100% (발행→재빌드→README 전파)
 - [x] 설계 정본화: 6도메인 16문서 + 상세 검토(결함 10건 반영) + 리서치 4건 반영
-- [ ] PR-A: content-hub projects 스키마 + CI 검증 확장
-- [ ] PR-B~D: 사이트 재설계 (Signal 디자인 시스템, /projects 목록·상세, 홈 재구성)
-- [ ] 프로젝트 콘텐츠 11건 게재
-- [ ] profile-admin: 서버리스 관리자 웹 (별도 레포)
+- [x] PR-A: content-hub projects 스키마 + CI 검증 확장
+- [x] PR-B~D: 사이트 재설계 (Signal→Warm Paper 디자인 전환, /projects 목록·상세, 홈 재구성)
+- [x] 프로젝트 콘텐츠 게재 (10/11건 published, 1건 draft)
+- [x] profile-admin: 서버리스 관리자 웹 초기 구현 (별도 레포, FR-M16~M24 진행 중)
+- [ ] content-hub: Dacon처럼 한 폴더에 여러 프로젝트(대회)가 있는 경우의 서브프로젝트 스키마 확장 (별도 설계 대기)
+- [ ] 사용자 화면 개선 4건: Star 프로젝트·Core Stack 분야별 그룹핑·Blog 홈 섹션 정리·프로젝트 상세 재설계 — 설계 노트: [`docs/md/_changes/사용자화면_개선4건_설계노트_2026-07-06.md`](./docs/md/_changes/사용자화면_개선4건_설계노트_2026-07-06.md)
 
 ## 협업 규칙
 
