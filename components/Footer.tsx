@@ -3,7 +3,7 @@ import { profile } from "@/lib/profile";
 export default function Footer() {
   return (
     <footer className="border-t border-border px-4 py-10 text-center text-sm text-muted">
-      <div className="mb-3 flex justify-center gap-6">
+      <div className="mb-3 flex flex-wrap justify-center gap-4 sm:gap-5 md:gap-6">
         <a
           href={profile.github}
           target="_blank"
